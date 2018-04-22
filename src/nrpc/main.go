@@ -12,6 +12,8 @@ import (
 	"net/http/httputil"
 	"runtime"
 	"log"
+	"time"
+	"flag"
 )
 type Nrpc struct {
 	ServerIp string
@@ -19,9 +21,15 @@ type Nrpc struct {
 }
 var nrpc Nrpc
 var conn net.Conn
+var ConfigFile string
+func init()  {
+
+	flag.StringVar(&ConfigFile, "config", "nrpc.json", "-config nrpc.json")
+	flag.Parse()
+}
 func main() {
 
-	b,err:=ioutil.ReadFile("nrpc.json")
+	b,err:=ioutil.ReadFile(ConfigFile)
 	if err!=nil{
 		panic(err)
 	}
@@ -35,12 +43,42 @@ func main() {
 
 	conn,err=net.Dial("tcp",nrpc.ServerIp)
 	if err!=nil{
-		panic(err)
-	}
-	fmt.Println(conn)
-	//fmt.Println(httpconn)
 
-	 read()
+		for{
+			conn,err=net.Dial("tcp",nrpc.ServerIp)
+			if err==nil{
+				break
+			}
+			log.Println("无法链接到服务器")
+			time.Sleep(1*time.Second)
+		}
+
+
+	}
+	//fmt.Println(conn)
+	//fmt.Println(httpconn)
+	fmt.Printf("已经连接到服务器,本地地址：%v,远程地址：%v\n",conn.LocalAddr(),conn.RemoteAddr())
+	go func() {
+
+		for{
+
+			lenght :=int32(0)
+			id :=uint64(0)
+			var b []byte
+			buffer:=bytes.NewBuffer(make([]byte,0))
+			binary.Write(buffer,binary.LittleEndian,&id)//8
+			binary.Write(buffer,binary.LittleEndian,&lenght)//4
+			binary.Write(buffer,binary.LittleEndian,&b)
+			dfs:=buffer.Bytes()
+			_,err=conn.Write(dfs)
+			CheckError(err)
+
+			time.Sleep(time.Second*3)
+		}
+
+	}()
+	read()
+
 }
 func CheckError(err error) {
 	if err != nil {
@@ -98,14 +136,25 @@ func readPack(b []byte)  {
 	*/
 
 	tcpaddr, err := net.ResolveTCPAddr("tcp", nrpc.LocalIp)
-	CheckError(err)
+	if err!=nil{
+		return
+	}
 	httpconn,err:=net.DialTCP("tcp",nil,tcpaddr)
-	CheckError(err)
-	httpconn.Write(fdfs)
+	if err!=nil{
+		return
+	}
+	_,err=httpconn.Write(fdfs)
+	if err!=nil{
+		return
+	}
 	resp,err:=http.ReadResponse(bufio.NewReader(httpconn),req)
-	CheckError(err)
+	if err!=nil{
+		return
+	}
 	sdf,err:=httputil.DumpResponse(resp,true)
-	CheckError(err)
+	if err!=nil{
+		return
+	}
 	//fmt.Println(string(sdf))
 
 
@@ -119,7 +168,9 @@ func readPack(b []byte)  {
 	dfs:=buffer.Bytes()
 
 	_,err=conn.Write(dfs)
-	CheckError(err)
+	if err!=nil{
+		return
+	}
 	fmt.Println("-------------写入代理-------------------")
 
 

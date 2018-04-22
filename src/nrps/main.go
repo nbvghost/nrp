@@ -13,6 +13,8 @@ import (
 	"log"
 	"net/http/httputil"
 	"time"
+	"strings"
+	"io"
 )
 
 var outList map[uint64]HttpPack
@@ -69,38 +71,94 @@ func CheckError(err error) {
 }
 
 func readweb(conn net.Conn)  {
-
-	//fmt.Println(conn.LocalAddr())
-
-	resp,err:=http.ReadRequest(bufio.NewReader(conn))
-	CheckError(err)
-
-	dfs,err:=httputil.DumpRequest(resp,true)
-	CheckError(err)
 	defer conn.Close()
+	//fmt.Println(conn.LocalAddr())
+	reader:=bufio.NewReader(conn)
 
-	if clientConnect!=nil{
-		//clientConnect.Write(b)
 
-		id=id+1
-		lenght :=int32(len(dfs))
-		buffer:=bytes.NewBuffer(make([]byte,0))
-		binary.Write(buffer,binary.LittleEndian,&id)//8
-		binary.Write(buffer,binary.LittleEndian,&lenght)//4
-		binary.Write(buffer,binary.LittleEndian,&dfs)
 
-		//fmt.Println(len(dfs))
-		hp:=HttpPack{out:make(chan []byte),time:time.Now()}
-		outList[id] = hp
-		clientConnect.Write(buffer.Bytes())
-		bdfd:=<-hp.out
-
-		conn.Write(bdfd)
-		close(hp.out)
-		fmt.Println("-----------输出数据-----------------")
-		//fmt.Println(string(bdfd))
+	resp,err:=http.ReadRequest(reader)
+	if resp==nil{
+		//fmt.Println(resp)
+		return
 	}
+	CheckError(err)
+	//fmt.Println(resp.Method)
+	//fmt.Println(resp.Host)
+
+	if strings.EqualFold(resp.Method,http.MethodConnect){
+		//fmt.Println(resp.Response)
+		//fmt.Println(http.ReadResponse(reader,resp))
+
+		server, err := net.DialTimeout("tcp", resp.Host,time.Second*12)
+
+		if err!=nil{
+
+			return
+		}
+
+		//http.StatusOK
+
+		fmt.Fprint(conn, "HTTP/1.1 200 Connection established\r\n\r\n")
+
+		go func() {
+			_,err:=io.Copy(server, conn)
+			CheckError(err)
+		}()
+		_,err=io.Copy(conn, server)
+		CheckError(err)
+
+	}else{
+		dfs,err:=httputil.DumpRequest(resp,true)
+		fmt.Println(string(dfs))
+		CheckError(err)
+
+		if clientConnect!=nil{
+			//clientConnect.Write(b)
+
+			id=id+1
+			lenght :=int32(len(dfs))
+			buffer:=bytes.NewBuffer(make([]byte,0))
+			binary.Write(buffer,binary.LittleEndian,&id)//8
+			binary.Write(buffer,binary.LittleEndian,&lenght)//4
+			binary.Write(buffer,binary.LittleEndian,&dfs)
+
+			//fmt.Println(len(dfs))
+			hp:=HttpPack{out:make(chan []byte),time:time.Now()}
+			outList[id] = hp
+			clientConnect.Write(buffer.Bytes())
+			bdfd:=<-hp.out
+
+			conn.Write(bdfd)
+			close(hp.out)
+			fmt.Println("-----------输出数据-----------------")
+			//fmt.Println(string(bdfd))
+
+		}else{
+
+
+			resp, err := http.DefaultTransport.RoundTrip(resp)
+			if err != nil {
+
+				return
+			}
+			defer resp.Body.Close()
+
+			b,err:=httputil.DumpResponse(resp,true)
+
+			conn.Write(b)
+
+		}
+	}
+
+
+
+
+
+
+
 }
+
 func main() {
 
 	b,err:=ioutil.ReadFile("nrps.json")
@@ -113,6 +171,9 @@ func main() {
 
 
 	//fmt.Println(nrps)
+
+
+
 
 
 	go startWeb()
@@ -136,6 +197,8 @@ func main() {
 			clientConnect.Close()
 		}
 		clientConnect = conn
+
+		fmt.Printf("新客户端，远程地址：%v，本地地址：%v",clientConnect.RemoteAddr(),clientConnect.LocalAddr())
 
 		go read()
 	}
@@ -179,10 +242,12 @@ func read()  {
 			continue
 		}
 
+		//fmt.Println(string(buffer[:n]))
+
 		buf=append(buf, buffer[:n]...)
 
 		for{
-			if len(buf)>12{
+			if len(buf)>=12{
 				testtH:=buf[0:12]
 				var id uint64
 				var lenght int32
@@ -195,7 +260,9 @@ func read()  {
 					packs:=buf[0:lenght+12]
 					buf=append(make([]byte,0), buf[lenght+12:]...)
 					go readPack(packs)
-					fmt.Printf("还有%v数据",len(buf))
+					if len(buf)>0{
+						fmt.Printf("还有%v数据\n",len(buf))
+					}
 				}else{
 					break
 				}

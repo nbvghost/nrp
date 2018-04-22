@@ -1,4 +1,4 @@
 {
-  "ServerIp":"nutsy.cc:7070",
-  "LocalIp":"127.0.0.1:80"
+  "ServerIp":"127.0.0.1:7000",
+  "LocalIp":"server.local:80"
 }
