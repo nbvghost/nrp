@@ -4,12 +4,14 @@
     <session id="-1530348301">
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="go" value="3" />
+          <entry key="go" value="24" />
+          <entry key="json" value="4" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="Go" value="3" />
+          <entry key="Go" value="24" />
+          <entry key="JSON" value="4" />
         </counts>
       </usages-collector>
     </session>
