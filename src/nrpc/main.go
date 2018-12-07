@@ -96,44 +96,18 @@ func readPack(b []byte)  {
 	binary.Read(readBuffer,binary.LittleEndian,&lenght)
 	bb:=make([]byte,lenght)
 	binary.Read(readBuffer,binary.LittleEndian,&bb)
-	fmt.Printf(string(bb))
+	//fmt.Printf(string(bb))
 
+
+
+	fmt.Println("-----------id------------")
+	fmt.Println(id)
 
 	req,err:=http.ReadRequest(bufio.NewReader(bytes.NewReader(bb)))
 	CheckError(err)
 	fdfs,err:=httputil.DumpRequest(req,true)
-	fmt.Println(string(fdfs))
-	/*
-		u,err:=url.Parse("http://"+nrpc.LocalIp)
-		p:=httputil.NewSingleHostReverseProxy(u)
+	//fmt.Println(string(fdfs))
 
-
-		var resp http.ResponseWriter
-		p.ServeHTTP(resp,req)
-
-		http.ReadResponse()
-
-
-		client:=http.DefaultClient
-		fmt.Println(req.RequestURI)
-		resp,err:=client.Do(req)
-
-
-		CheckError(err)
-		bk,err:=httputil.DumpResponse(resp,true)
-		CheckError(err)
-		lenght =int32(len(bk))
-		buffer:=bytes.NewBuffer(make([]byte,0))
-		binary.Write(buffer,binary.LittleEndian,&id)//8
-		binary.Write(buffer,binary.LittleEndian,&lenght)//4
-		binary.Write(buffer,binary.LittleEndian,&bk)
-
-		dfs:=buffer.Bytes()
-
-		_,err=conn.Write(dfs)
-		CheckError(err)
-		fmt.Println("-------------写入代理-------------------")
-	*/
 
 	tcpaddr, err := net.ResolveTCPAddr("tcp", nrpc.LocalIp)
 	if err!=nil{
@@ -172,54 +146,6 @@ func readPack(b []byte)  {
 		return
 	}
 	fmt.Println("-------------写入代理-------------------")
-
-
-	/*tcpaddr, err := net.ResolveTCPAddr("tcp", nrpc.LocalIp)
-	fmt.Println(err)
-	httpconn,err:=net.DialTCP("tcp",nil,tcpaddr)
-	if err!=nil{
-		panic(err)
-	}
-	httpconn.SetReadBuffer(4096)
-	//httpconn.SetKeepAlive(true)
-	//fmt.Println(string(bb))
-	httpconn.Write(bb)
-
-	defer httpconn.Close()
-
-	result := bytes.NewBuffer(make([]byte,0))
-	var buf [4096]byte
-
-	for{
-		//fmt.Println("读取缓冲字节数：")
-
-
-
-		httpconn.SetReadDeadline(time.Now().Add(time.Millisecond*500))
-		n,err:= httpconn.Read(buf[0:])
-		if err!=nil{
-			break
-		}
-
-		result.Write(buf[0:n])
-		//fmt.Println(n)
-		//fmt.Println(string(buf[0:n]))
-	}
-	bk:=result.Bytes()
-
-	//fmt.Println(string(bk))
-
-	lenght =int32(len(bk))
-	buffer:=bytes.NewBuffer(make([]byte,0))
-	binary.Write(buffer,binary.LittleEndian,&id)//8
-	binary.Write(buffer,binary.LittleEndian,&lenght)//4
-	binary.Write(buffer,binary.LittleEndian,&bk)
-
-	dfs:=buffer.Bytes()
-
-	_,err=conn.Write(dfs)
-	fmt.Println("-------------写入代理-------------------")
-	//fmt.Println(string(bk))*/
 
 }
 func read()  {
