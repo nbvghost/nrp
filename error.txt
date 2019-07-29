@@ -1,0 +1,6 @@
+
+goroutine 542372 [running]:
+main.nrpClientRead()
+        C:/Users/Mloong/Desktop/nrp/src/nrps/main.go:300 +0x58f
+created by main.main
+        C:/Users/Mloong/Desktop/nrp/src/nrps/main.go:238 +0x1c1

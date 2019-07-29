@@ -6,6 +6,8 @@ import (
 	"encoding/binary"
 	"encoding/json"
 	"fmt"
+	"github.com/nbvghost/glog"
+	"github.com/nbvghost/gweb/thread"
 	"io"
 	"io/ioutil"
 	"log"
@@ -235,7 +237,16 @@ func main() {
 
 		fmt.Printf("新客户端，远程地址：%v，本地地址：%v", clientConnect.RemoteAddr(), clientConnect.LocalAddr())
 
-		go nrpClientRead()
+		thread.NewCoroutine(func() {
+
+			nrpClientRead()
+
+		}, func(v interface{}, stack []byte) {
+
+			glog.Trace(v)
+			glog.Trace(string(stack))
+
+		})
 	}
 
 }
@@ -295,11 +306,19 @@ func nrpClientRead() {
 				binary.Read(readBuffer, binary.LittleEndian, &id)
 				binary.Read(readBuffer, binary.LittleEndian, &lenght)
 
-				if int32(len(buf)) >= lenght+12 {
-
-					packs := buf[0 : lenght+12]
+				packLen:=lenght+12
+				glog.Trace("nrpClientRead",packLen,len(buf))
+				if int32(len(buf)) >= packLen && packLen>0 {
+					packs := buf[0 : packLen]
 					buf = append(make([]byte, 0), buf[lenght+12:]...)
-					go nrpClientReadPack(packs)
+					thread.NewCoroutineParams(func(args []interface{}) {
+						packs:=args[0].([]byte)
+						nrpClientReadPack(packs)
+
+					}, func(v interface{}, stack []byte) {
+						glog.Trace(v)
+						glog.Trace(string(stack))
+					},packs)
 					if len(buf) > 0 {
 						fmt.Printf("还有%v数据\n", len(buf))
 					}

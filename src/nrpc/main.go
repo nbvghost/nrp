@@ -1,19 +1,18 @@
 package main
 
 import (
-	"net"
-	"io/ioutil"
-	"encoding/json"
-	"fmt"
+	"bufio"
 	"bytes"
 	"encoding/binary"
-	"net/http"
-	"bufio"
-	"net/http/httputil"
-	"runtime"
-	"log"
-	"time"
+	"encoding/json"
 	"flag"
+	"github.com/nbvghost/glog"
+	"io/ioutil"
+	"log"
+	"net"
+	"net/http"
+	"net/http/httputil"
+	"time"
 )
 type Nrpc struct {
 	ServerIp string
@@ -26,11 +25,21 @@ func init()  {
 
 	flag.StringVar(&ConfigFile, "config", "nrpc.json", "-config nrpc.json")
 	flag.Parse()
+
+	log.SetFlags(log.Lshortfile)
+
+	glog.Param.Debug =true
+	//glog.Param.ServerAddr = ""
+	glog.Param.FileStorage = true
+	glog.Param.ServerName = "NRPc"
+	glog.Param.LogFilePath = "log"
+	glog.StartLogger(glog.Param)
+
 }
 func main() {
 
 	b,err:=ioutil.ReadFile(ConfigFile)
-	if err!=nil{
+	if glog.Error(err){
 		panic(err)
 	}
 
@@ -42,14 +51,14 @@ func main() {
 
 
 	conn,err=net.Dial("tcp",nrpc.ServerIp)
-	if err!=nil{
+	if glog.Error(err){
 
 		for{
 			conn,err=net.Dial("tcp",nrpc.ServerIp)
-			if err==nil{
+			if glog.Error(err)==false{
 				break
 			}
-			log.Println("无法链接到服务器")
+			glog.Trace("无法链接到服务器")
 			time.Sleep(1*time.Second)
 		}
 
@@ -57,7 +66,7 @@ func main() {
 	}
 	//fmt.Println(conn)
 	//fmt.Println(httpconn)
-	fmt.Printf("已经连接到服务器,本地地址：%v,远程地址：%v\n",conn.LocalAddr(),conn.RemoteAddr())
+	glog.Trace("已经连接到服务器,本地地址：%v,远程地址：%v\n",conn.LocalAddr(),conn.RemoteAddr())
 	go func() {
 
 		for{
@@ -71,7 +80,7 @@ func main() {
 			binary.Write(buffer,binary.LittleEndian,&b)
 			dfs:=buffer.Bytes()
 			_,err=conn.Write(dfs)
-			CheckError(err)
+			glog.Error(err)
 
 			time.Sleep(time.Second*3)
 		}
@@ -79,12 +88,6 @@ func main() {
 	}()
 	read()
 
-}
-func CheckError(err error) {
-	if err != nil {
-		_, file, line, _ := runtime.Caller(1)
-		log.Println(file, line, err)
-	}
 }
 
 func readPack(b []byte)  {
@@ -100,11 +103,11 @@ func readPack(b []byte)  {
 
 
 
-	fmt.Println("-----------id------------")
-	fmt.Println(id)
+	glog.Trace("-----------id------------")
+	glog.Trace(id)
 
 	req,err:=http.ReadRequest(bufio.NewReader(bytes.NewReader(bb)))
-	CheckError(err)
+	glog.Error(err)
 	fdfs,err:=httputil.DumpRequest(req,true)
 	//fmt.Println(string(fdfs))
 
@@ -145,7 +148,7 @@ func readPack(b []byte)  {
 	if err!=nil{
 		return
 	}
-	fmt.Println("-------------写入代理-------------------")
+	glog.Trace("-------------写入代理-------------------")
 
 }
 func read()  {
@@ -181,7 +184,7 @@ func read()  {
 					packs:=buf[0:lenght+12]
 					buf=append(make([]byte,0), buf[lenght+12:]...)
 					go readPack(packs)
-					fmt.Printf("还有%v数据\n",len(buf))
+					glog.Trace("还有%v数据\n",len(buf))
 
 				}else{
 					break
@@ -190,12 +193,9 @@ func read()  {
 				break
 			}
 		}
-
-
 		//fmt.Println(n)
 		//fmt.Println(err)
 		//fmt.Println(string(buf))
-
 		//httpconn.Write(buf[:n])
 
 	}
