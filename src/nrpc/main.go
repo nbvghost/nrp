@@ -18,6 +18,7 @@ import (
 type Nrpc struct {
 	ServerIp string
 	LocalIp string
+	ProxyPort string
 }
 var nrpc Nrpc
 var conn net.Conn
@@ -48,7 +49,6 @@ func main() {
 			time.Sleep(1*time.Second)
 		}
 
-
 	}
 	//fmt.Println(conn)
 	//fmt.Println(httpconn)
@@ -57,16 +57,18 @@ func main() {
 
 		for{
 			//发送心跳包
-			lenght :=int32(0)
+			//lenght :=int32(0)
 			id :=uint64(0)
 			var b []byte
-			buffer:=bytes.NewBuffer(make([]byte,0))
+			writePackage(b,id)
+
+			/*buffer:=bytes.NewBuffer(make([]byte,0))
 			binary.Write(buffer,binary.LittleEndian,&id)//8
 			binary.Write(buffer,binary.LittleEndian,&lenght)//4
 			binary.Write(buffer,binary.LittleEndian,&b)
 			dfs:=buffer.Bytes()
 			_,err=conn.Write(dfs)
-			CheckError(err)
+			CheckError(err)*/
 
 			time.Sleep(time.Second*3)
 		}
@@ -98,37 +100,7 @@ func readPack(b []byte)  {
 	CheckError(err)
 	fdfs,err:=httputil.DumpRequest(req,true)
 	fmt.Println(string(fdfs))
-	/*
-		u,err:=url.Parse("http://"+nrpc.LocalIp)
-		p:=httputil.NewSingleHostReverseProxy(u)
 
-
-		var resp http.ResponseWriter
-		p.ServeHTTP(resp,req)
-
-		http.ReadResponse()
-
-
-		client:=http.DefaultClient
-		fmt.Println(req.RequestURI)
-		resp,err:=client.Do(req)
-
-
-		CheckError(err)
-		bk,err:=httputil.DumpResponse(resp,true)
-		CheckError(err)
-		lenght =int32(len(bk))
-		buffer:=bytes.NewBuffer(make([]byte,0))
-		binary.Write(buffer,binary.LittleEndian,&id)//8
-		binary.Write(buffer,binary.LittleEndian,&lenght)//4
-		binary.Write(buffer,binary.LittleEndian,&bk)
-
-		dfs:=buffer.Bytes()
-
-		_,err=conn.Write(dfs)
-		CheckError(err)
-		fmt.Println("-------------写入代理-------------------")
-	*/
 
 	tcpaddr, err := net.ResolveTCPAddr("tcp", nrpc.LocalIp)
 	if err!=nil{
@@ -152,70 +124,22 @@ func readPack(b []byte)  {
 	}
 	//fmt.Println(string(sdf))
 
+	writePackage(sdf,id)
+}
+func writePackage(packages []byte,id uint64)(n int, err error)  {
 
-
-	lenght =int32(len(sdf))
+	lenght :=int32(len(packages))
 	buffer:=bytes.NewBuffer(make([]byte,0))
 	binary.Write(buffer,binary.LittleEndian,&id)//8
 	binary.Write(buffer,binary.LittleEndian,&lenght)//4
-	binary.Write(buffer,binary.LittleEndian,&sdf)
-
+	binary.Write(buffer,binary.LittleEndian,&packages)
 	dfs:=buffer.Bytes()
 
 	_,err=conn.Write(dfs)
-	if err!=nil{
-		return
-	}
+	CheckError(err)
 	fmt.Println("-------------写入代理-------------------")
 
-
-	/*tcpaddr, err := net.ResolveTCPAddr("tcp", nrpc.LocalIp)
-	fmt.Println(err)
-	httpconn,err:=net.DialTCP("tcp",nil,tcpaddr)
-	if err!=nil{
-		panic(err)
-	}
-	httpconn.SetReadBuffer(4096)
-	//httpconn.SetKeepAlive(true)
-	//fmt.Println(string(bb))
-	httpconn.Write(bb)
-
-	defer httpconn.Close()
-
-	result := bytes.NewBuffer(make([]byte,0))
-	var buf [4096]byte
-
-	for{
-		//fmt.Println("读取缓冲字节数：")
-
-
-
-		httpconn.SetReadDeadline(time.Now().Add(time.Millisecond*500))
-		n,err:= httpconn.Read(buf[0:])
-		if err!=nil{
-			break
-		}
-
-		result.Write(buf[0:n])
-		//fmt.Println(n)
-		//fmt.Println(string(buf[0:n]))
-	}
-	bk:=result.Bytes()
-
-	//fmt.Println(string(bk))
-
-	lenght =int32(len(bk))
-	buffer:=bytes.NewBuffer(make([]byte,0))
-	binary.Write(buffer,binary.LittleEndian,&id)//8
-	binary.Write(buffer,binary.LittleEndian,&lenght)//4
-	binary.Write(buffer,binary.LittleEndian,&bk)
-
-	dfs:=buffer.Bytes()
-
-	_,err=conn.Write(dfs)
-	fmt.Println("-------------写入代理-------------------")
-	//fmt.Println(string(bk))*/
-
+	return 0,nil
 }
 func read()  {
 
@@ -259,13 +183,6 @@ func read()  {
 				break
 			}
 		}
-
-
-		//fmt.Println(n)
-		//fmt.Println(err)
-		//fmt.Println(string(buf))
-
-		//httpconn.Write(buf[:n])
 
 	}
 

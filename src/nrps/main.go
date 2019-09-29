@@ -6,8 +6,7 @@ import (
 	"encoding/binary"
 	"encoding/json"
 	"fmt"
-	"io"
-	"io/ioutil"
+		"io/ioutil"
 	"log"
 	"net"
 	"net/http"
@@ -15,6 +14,7 @@ import (
 	"runtime"
 	"strings"
 	"time"
+	"io"
 )
 
 var outList map[uint64]HttpPack
@@ -94,7 +94,7 @@ func readweb(conn net.Conn) {
 		server, err := net.DialTimeout("tcp", resp.Host, time.Second*12)
 
 		if err != nil {
-
+			CheckError(err)
 			return
 		}
 
@@ -102,12 +102,25 @@ func readweb(conn net.Conn) {
 
 		fmt.Fprint(conn, "HTTP/1.1 200 Connection established\r\n\r\n")
 
+
+		/*sb,err:=ioutil.ReadAll(server)
+		CheckError(err)
+		_,err=conn.Write(sb)
+		CheckError(err)*/
+
+
 		go func() {
 			_, err := io.Copy(server, conn)
 			CheckError(err)
 		}()
+		 //cb:=make([]byte,32)
+		//cb,err=ioutil.ReadAll(server)//io.ReadFull(server,cb)
 		_, err = io.Copy(conn, server)
 		CheckError(err)
+		//conn.Write(cb)
+		//io.CopyBuffer()
+
+
 
 	} else {
 		dfs, err := httputil.DumpRequest(resp, true)
