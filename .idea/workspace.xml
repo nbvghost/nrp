@@ -2,88 +2,24 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f8776516-0ecb-4c51-b7d6-f45330a83170" name="Default" comment="">
+      <change afterPath="$PROJECT_DIR$/build/nrpc.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/nrps.exe" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/nrps.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nrpc" beforeDir="false" afterPath="$PROJECT_DIR$/nrpc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nrpc.exe" beforeDir="false" afterPath="$PROJECT_DIR$/nrpc.exe" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nrps" beforeDir="false" afterPath="$PROJECT_DIR$/nrps" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/nrpc/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/nrpc/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/nrps/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/nrps/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nohup.out" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/nrpc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/nrpc.exe" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/nrpc.json" beforeDir="false" afterPath="$PROJECT_DIR$/nrpc.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nrps" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/nrps.exe" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/nrpc/main.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/nrps/main.go" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
-  </component>
-  <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/nrpc/main.go">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="243">
-              <caret line="72" selection-start-line="72" selection-end-line="72" />
-              <folding>
-                <element signature="e#14#172#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../GoLibs/src/github.com/nbvghost/gweb/thread/thread.go">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="162">
-              <caret line="14" selection-start-line="14" selection-end-line="14" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../GoLibs/src/github.com/nbvghost/glog/glog_tcp.go">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="199">
-              <caret line="31" selection-start-line="31" selection-end-line="31" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../GoLibs/src/github.com/nbvghost/glog/glog.go">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="372">
-              <caret line="273" column="36" selection-start-line="273" selection-start-column="36" selection-end-line="273" selection-end-column="36" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/nrps/main.go">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="174">
-              <caret line="301" column="35" lean-forward="true" selection-start-line="301" selection-start-column="35" selection-end-line="301" selection-end-column="35" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/nrpc.json">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="54">
-              <caret line="3" column="1" selection-start-line="3" selection-start-column="1" selection-end-line="3" selection-end-column="1" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/nrps.json">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="54">
-              <caret line="3" column="1" selection-start-line="3" selection-start-column="1" selection-end-line="3" selection-end-column="1" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -92,105 +28,17 @@
       </list>
     </option>
   </component>
-  <component name="FindInProjectRecents">
-    <findStrings>
-      <find>Buffer</find>
-      <find>ho</find>
-      <find>resp</find>
-      <find>ModifyResponse</find>
-      <find>Transport</find>
-      <find>transportRequest</find>
-      <find>connect</find>
-      <find>connectMethodForRequest</find>
-      <find>ProxyConnectHeader</find>
-      <find>CONNECT</find>
-      <find>ProxyURL</find>
-      <find>established</find>
-      <find>readweb</find>
-      <find>startWeb</find>
-      <find>WriteHeader</find>
-      <find>RoundTrip</find>
-      <find>read</find>
-      <find>read(</find>
-      <find>out</find>
-      <find>outList</find>
-      <find>还有</find>
-      <find>.out</find>
-      <find>nrpClientReadPack</find>
-      <find>clientConnect</find>
-      <find>---id--</find>
-      <find>readPack</find>
-      <find>fmt.</find>
-      <find>log.</find>
-      <find>nrpClientRead</find>
-      <find>go</find>
-    </findStrings>
-    <dirStrings>
-      <dir>C:\Go\src</dir>
-    </dirStrings>
-  </component>
   <component name="GOROOT" path="C:\Go" />
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="IdeDocumentHistory">
-    <option name="CHANGED_PATHS">
-      <list>
-        <option value="$PROJECT_DIR$/nrps.json" />
-        <option value="$PROJECT_DIR$/nrpc.json" />
-        <option value="$PROJECT_DIR$/../GoLibs/src/github.com/nbvghost/glog/glog.go" />
-        <option value="$PROJECT_DIR$/src/nrpc/main.go" />
-        <option value="$PROJECT_DIR$/src/nrps/main.go" />
-      </list>
-    </option>
+  <component name="GoLibraries">
+    <option name="indexEntireGoPath" value="false" />
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="472" />
-    <option name="y" value="504" />
-    <option name="width" value="1934" />
-    <option name="height" value="1057" />
+  <component name="MacroExpansionManager">
+    <option name="directoryName" value="YZxWNylI" />
   </component>
-  <component name="ProjectView">
-    <navigator proportions="" version="1">
-      <foldersAlwaysOnTop value="true" />
-    </navigator>
-    <panes>
-      <pane id="Scope" />
-      <pane id="ProjectPane">
-        <subPane>
-          <expand>
-            <path>
-              <item name="nrp" type="b2602c69:ProjectViewProjectNode" />
-              <item name="nrp" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="nrp" type="b2602c69:ProjectViewProjectNode" />
-              <item name="nrp" type="462c0819:PsiDirectoryNode" />
-              <item name="cert" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="nrp" type="b2602c69:ProjectViewProjectNode" />
-              <item name="nrp" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="nrp" type="b2602c69:ProjectViewProjectNode" />
-              <item name="nrp" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="nrpc" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="nrp" type="b2602c69:ProjectViewProjectNode" />
-              <item name="nrp" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="nrps" type="462c0819:PsiDirectoryNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
-    </panes>
-  </component>
+  <component name="ProjectId" id="1RZ60uPgraVhjQDSqYLJoirUX2Y" />
   <component name="PropertiesComponent">
     <property name="DefaultGoTemplateProperty" value="Go Application" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
@@ -198,6 +46,7 @@
     <property name="go.gopath.indexing.explicitly.defined" value="true" />
     <property name="go.import.settings.migrated" value="true" />
     <property name="go.sdk.automatically.set" value="true" />
+    <property name="go.tried.to.enable.integration.vgo.integrator" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -222,159 +71,48 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Go Build.go build nrpc/">
-    <configuration name="go build nrpc/" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="Go Build.go build github.com/nbvghost/nrp/nrpc">
+    <configuration name="go build github.com/nbvghost/nrp/nrpc" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
       <module name="nrp" />
-      <working_directory value="$PROJECT_DIR$/" />
-      <go_parameters value="-i" />
-      <kind value="DIRECTORY" />
-      <filePath value="$PROJECT_DIR$/" />
-      <directory value="$PROJECT_DIR$/src/nrpc" />
+      <working_directory value="$PROJECT_DIR$" />
+      <kind value="PACKAGE" />
+      <package value="github.com/nbvghost/nrp/nrpc" />
+      <directory value="$PROJECT_DIR$/" />
       <method v="2" />
     </configuration>
-    <configuration name="go build nrps/" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
+    <configuration name="go build github.com/nbvghost/nrp/nrps" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
       <module name="nrp" />
-      <working_directory value="$PROJECT_DIR$/" />
-      <go_parameters value="-i" />
-      <kind value="DIRECTORY" />
-      <filePath value="$PROJECT_DIR$/" />
-      <directory value="$PROJECT_DIR$/src/nrps" />
+      <working_directory value="$PROJECT_DIR$" />
+      <kind value="PACKAGE" />
+      <package value="github.com/nbvghost/nrp/nrps" />
+      <directory value="$PROJECT_DIR$/" />
       <method v="2" />
     </configuration>
-    <list>
-      <item itemvalue="Go Build.go build nrpc/" />
-      <item itemvalue="Go Build.go build nrps/" />
-    </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Go Build.go build nrpc/" />
-        <item itemvalue="Go Build.go build nrps/" />
+        <item itemvalue="Go Build.go build github.com/nbvghost/nrp/nrpc" />
+        <item itemvalue="Go Build.go build github.com/nbvghost/nrp/nrps" />
       </list>
     </recent_temporary>
-  </component>
-  <component name="ToolWindowManager">
-    <frame x="-8" y="22" width="1936" height="1066" extended-state="6" />
-    <editor active="true" />
-    <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2196162" />
-      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info id="Favorites" order="2" side_tool="true" />
-      <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.32931727" />
-      <window_info anchor="bottom" id="Run" order="2" />
-      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.49946696" visible="true" weight="0.27974278" />
-      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Terminal" order="8" />
-      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.50053304" side_tool="true" weight="0.41523606" />
-      <window_info anchor="bottom" id="Version Control" order="10" weight="0.32939914" />
-      <window_info anchor="bottom" id="Docker" order="11" show_stripe_button="false" />
-      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
-      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="right" id="Database" order="3" />
-    </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
   </component>
-  <component name="editorHistoryManager">
-    <entry file="file://C:/Go/src/context/context.go" />
-    <entry file="file://C:/Go/src/net/url/url.go" />
-    <entry file="file://C:/Go/src/encoding/binary/binary.go" />
-    <entry file="file://C:/Go/src/net/http/internal/chunked.go" />
-    <entry file="file://C:/Go/src/runtime/asm_amd64.s" />
-    <entry file="file://C:/Go/src/io/ioutil/ioutil.go" />
-    <entry file="file://C:/Go/src/net/http/httputil/httputil.go" />
-    <entry file="file://C:/Go/src/net/tcpsock_posix.go" />
-    <entry file="file://C:/Go/src/net/dial.go" />
-    <entry file="file://C:/Go/src/io/io.go" />
-    <entry file="file://C:/Go/src/net/tcpsock.go" />
-    <entry file="file://C:/Go/src/net/http/httputil/persist.go" />
-    <entry file="file://C:/Go/src/net/textproto/reader.go" />
-    <entry file="file://C:/Go/src/net/http/header.go" />
-    <entry file="file://C:/Go/src/bytes/buffer.go" />
-    <entry file="file://C:/Go/src/bufio/bufio.go" />
-    <entry file="file://C:/Go/src/net/http/httputil/reverseproxy.go" />
-    <entry file="file://C:/Go/src/net/http/httputil/dump.go" />
-    <entry file="file://$PROJECT_DIR$/cert/2_nutsy.cc.key">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="216">
-          <caret line="12" column="24" lean-forward="true" selection-start-line="12" selection-start-column="24" selection-end-line="12" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://C:/Go/src/crypto/tls/tls.go" />
-    <entry file="file://C:/Go/src/net/net.go" />
-    <entry file="file://$USER_HOME$/go/src/golang.org/x/net/proxy/proxy.go" />
-    <entry file="file://$USER_HOME$/go/src/golang.org/x/net/proxy/socks5.go" />
-    <entry file="file://C:/Go/src/net/http/transport_test.go" />
-    <entry file="file://C:/Go/src/runtime/panic.go" />
-    <entry file="file://C:/Go/src/net/http/request.go" />
-    <entry file="file://C:/Go/src/net/http/response.go" />
-    <entry file="file://C:/Go/src/net/http/transport.go" />
-    <entry file="file://C:/Go/src/net/http/method.go" />
-    <entry file="file://C:/Go/src/net/http/server.go" />
-    <entry file="file://C:/Go/src/net/http/status.go" />
-    <entry file="file://C:/Go/src/time/time.go" />
-    <entry file="file://C:/Go/src/net/http/client.go" />
-    <entry file="file://D:/Go/src/time/tick.go" />
-    <entry file="file://D:/Go/src/time/time.go" />
-    <entry file="file://D:/Go/src/io/io.go" />
-    <entry file="file://D:/Go/src/runtime/panic.go" />
-    <entry file="file://$PROJECT_DIR$/nrpc.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="54">
-          <caret line="3" column="1" selection-start-line="3" selection-start-column="1" selection-end-line="3" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/nrps.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="54">
-          <caret line="3" column="1" selection-start-line="3" selection-start-column="1" selection-end-line="3" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../GoLibs/src/github.com/nbvghost/gweb/thread/thread.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="162">
-          <caret line="14" selection-start-line="14" selection-end-line="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../GoLibs/src/github.com/nbvghost/glog/glog_tcp.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="199">
-          <caret line="31" selection-start-line="31" selection-end-line="31" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../GoLibs/src/github.com/nbvghost/glog/glog.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="372">
-          <caret line="273" column="36" selection-start-line="273" selection-start-column="36" selection-end-line="273" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/nrpc/main.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="243">
-          <caret line="72" selection-start-line="72" selection-end-line="72" />
-          <folding>
-            <element signature="e#14#172#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/nrps/main.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="174">
-          <caret line="301" column="35" lean-forward="true" selection-start-line="301" selection-start-column="35" selection-end-line="301" selection-end-column="35" />
-        </state>
-      </provider>
-    </entry>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VgoProject">
+    <integration-enabled>true</integration-enabled>
+    <proxy>direct</proxy>
   </component>
 </project>
