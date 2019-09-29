@@ -2,18 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f8776516-0ecb-4c51-b7d6-f45330a83170" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/build/nrpc.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/nrps.exe" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/nrps.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/usage.statistics.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nohup.out" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/nrpc" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/nrpc.exe" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/nrpc.json" beforeDir="false" afterPath="$PROJECT_DIR$/nrpc.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nrps" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/nrps.exe" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/nrpc/main.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/nrps/main.go" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -88,6 +78,10 @@
       <directory value="$PROJECT_DIR$/" />
       <method v="2" />
     </configuration>
+    <list>
+      <item itemvalue="Go Build.go build github.com/nbvghost/nrp/nrpc" />
+      <item itemvalue="Go Build.go build github.com/nbvghost/nrp/nrps" />
+    </list>
     <recent_temporary>
       <list>
         <item itemvalue="Go Build.go build github.com/nbvghost/nrp/nrpc" />
