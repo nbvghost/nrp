@@ -1,3 +1,7 @@
 /.idea/
 /.vscode/
-nrpc.exe
+/nrpc.exe
+/nrpc
+/nrps
+.idea
+/log
