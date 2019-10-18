@@ -334,7 +334,7 @@ func nrpClientRead() {
 				binary.Read(readBuffer, binary.LittleEndian, &lenght)
 
 				packLen:=lenght+12
-				glog.Trace("nrpClientRead",packLen,len(buf))
+				//glog.Trace("nrpClientRead",packLen,len(buf))
 				if int32(len(buf)) >= packLen && packLen>0 {
 					packs := buf[0 : packLen]
 					buf = append(make([]byte, 0), buf[lenght+12:]...)
@@ -353,7 +353,8 @@ func nrpClientRead() {
 
 
 					if len(buf) > 0 {
-						fmt.Printf("还有%v数据\n", len(buf))
+						//fmt.Printf("还有%v数据\n", len(buf))
+						glog.Trace(fmt.Sprintf("分包处理数据长度：%v", len(buf)))
 					}
 				} else {
 					break

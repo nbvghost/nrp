@@ -3,7 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="f8776516-0ecb-4c51-b7d6-f45330a83170" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/nrpc.json" beforeDir="false" afterPath="$PROJECT_DIR$/build/nrpc.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/nrps/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/app/nrps/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
