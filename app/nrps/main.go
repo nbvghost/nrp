@@ -2,13 +2,15 @@ package main
 
 import (
 	"bufio"
-	"bytes"
-	"encoding/binary"
 	"encoding/json"
 	"fmt"
-	"github.com/nbvghost/glog"
+	"github.com/nbvghost/nrp/domain/httppack"
+
+	"github.com/nbvghost/nrp/domain/unpack"
+	"github.com/nbvghost/nrp/model"
 	"io"
 	"io/ioutil"
+	"log"
 	"net"
 	"net/http"
 	"net/http/httputil"
@@ -18,47 +20,13 @@ import (
 	"time"
 )
 
-var outList OutList
+var outList httppack.OutList
 var globalID uint64
-var nrps Nrps
+var nrpS model.NrpS
 var clientConnect *net.TCPConn
 
-type OutList struct {
-	Data map[uint64]*HttpPack
-	Lock sync.Mutex
-}
-func (ol *OutList) Set(key uint64,value *HttpPack) {
-	ol.Lock.Lock()
-	defer ol.Lock.Unlock()
-	if ol.Data==nil{
-		ol.Data = make(map[uint64]*HttpPack)
-	}
-	ol.Data[key] = value
-}
-func (ol *OutList) Get(key uint64) (*HttpPack,bool)  {
-	ol.Lock.Lock()
-	defer ol.Lock.Unlock()
-	if ol.Data==nil{
-		ol.Data = make(map[uint64]*HttpPack)
-	}
-	_,ok:=ol.Data[key]
-	return ol.Data[key],ok
-}
-func (ol *OutList) Del(key uint64)  {
-	ol.Lock.Lock()
-	defer ol.Lock.Unlock()
-	delete(ol.Data,key)
-}
-type Nrps struct {
-	BindPort string
-	HttpPort string
-}
-type HttpPack struct {
-	out  chan []byte
-	time time.Time
-}
-
 func init() {
+	log.SetFlags(log.Lshortfile)
 
 	/*go func() {
 
@@ -71,77 +39,66 @@ func init() {
 
 	}()*/
 }
+
 func main() {
-
-	glog.Param.Debug =true
-	//glog.Param.ServerAddr = ""
-	glog.Param.FileStorage = true
-	glog.Param.ServerName = "NRPs"
-	glog.Param.LogFilePath = "log"
-	glog.StartLogger(glog.Param)
-
-
 	b, err := ioutil.ReadFile("nrps.json")
 	if err != nil {
 		panic(err)
 	}
 
-	json.Unmarshal(b, &nrps)
-
-
-
-
+	json.Unmarshal(b, &nrpS)
 
 	//fmt.Println(nrps)
 
-	go startWeb()
-
-	tcpAddress, err := net.ResolveTCPAddr("tcp", nrps.BindPort)
+	tcpAddress, err := net.ResolveTCPAddr("tcp", nrpS.ServerPort)
 	l, err := net.ListenTCP("tcp", tcpAddress)
 	if err != nil {
 		panic(err)
 	}
 	defer l.Close()
 
-
-	glog.Trace("start server at",tcpAddress.Network(),tcpAddress.String())
-	glog.Trace("listen at",l.Addr().Network(),l.Addr().String())
+	log.Println("start server at", tcpAddress.Network(), tcpAddress.String())
+	log.Println("listen at", l.Addr().Network(), l.Addr().String())
 
 	go func() {
 
-		for{
-			if clientConnect!=nil{
-				lenght := int32(0)
-				id:=uint64(0)
-				dfs:=make([]byte,0)
-				buffer := bytes.NewBuffer(make([]byte, 0))
-				binary.Write(buffer, binary.LittleEndian, &id)     //8
-				binary.Write(buffer, binary.LittleEndian, &lenght) //4
-				binary.Write(buffer, binary.LittleEndian, &dfs)
-				_,err:=clientConnect.Write(buffer.Bytes())
-				if glog.Error(err){
+		for {
+			if clientConnect != nil {
+				length := int32(0)
+				id := uint64(0)
+				body := make([]byte, 0)
 
+				//buffer := bytes.NewBuffer(make([]byte, 0))
+				//binary.Write(buffer, binary.LittleEndian, &id)     //8
+				//binary.Write(buffer, binary.LittleEndian, &lenght) //4
+				//binary.Write(buffer, binary.LittleEndian, &dfs)
+				buffer, err := unpack.ToBytes(unpack.NewHead(id, length, unpack.HeadTypeHeartbeat), body)
+				if err != nil {
+					log.Println(err)
+					continue
+				}
+				_, err = clientConnect.Write(buffer.Bytes())
+				if err != nil {
+					log.Println("写入客户端心跳包失败")
 				}
 			}
-			time.Sleep(1*time.Second)
+			time.Sleep(1 * time.Second)
 		}
 
 	}()
 
 	for {
 
-		conn, err := l.AcceptTCP()
+		clientConnect, err = l.AcceptTCP()
 		if err != nil {
 			panic(err)
 		}
-		conn.SetKeepAlive(true)
-		if clientConnect != nil {
-			clientConnect.Close()
+		err = clientConnect.SetKeepAlive(true)
+		if err != nil {
+			panic(err)
 		}
-		clientConnect = conn
 
-		glog.Trace(fmt.Sprintf("新客户端，远程地址：%v，本地地址：%v", clientConnect.RemoteAddr(), clientConnect.LocalAddr()))
-
+		log.Println(fmt.Sprintf("新客户端，远程地址：%v，本地地址：%v", clientConnect.RemoteAddr(), clientConnect.LocalAddr()))
 
 		go func() {
 			nrpClientRead()
@@ -150,8 +107,8 @@ func main() {
 	}
 
 }
-func startWeb() {
-	l, err := net.Listen("tcp", nrps.HttpPort)
+func startHttp() {
+	l, err := net.Listen("tcp", nrpS.ProxyPort)
 	if err != nil {
 		panic(err)
 	}
@@ -164,23 +121,95 @@ func startWeb() {
 			panic(err)
 		}
 
-		go readweb(conn)
+		go readWeb(conn)
+	}
+}
+func startTCP() {
+	var conn net.Conn
+	var err error
+
+	var closeChan = make(chan int)
+	defer func() {
+		closeChan <- 1
+	}()
+	go func() {
+		var id uint64 = 0
+		hp := &httppack.HttpPack{Out: make(chan []byte), Time: time.Now()}
+		outList.Set(id, hp)
+
+		h, ok := outList.Get(id)
+
+		if ok {
+			for {
+				select {
+				case body := <-h.Out:
+					_, err := conn.Write([]byte("body"))
+					_, err = conn.Write(body)
+					if err != nil {
+						log.Println(err)
+					}
+					//close(hp.out)
+					//log.Println("-----------输出数据-----------------")
+				case <-closeChan:
+					return
+
+				}
+			}
+		} else {
+
+		}
+	}()
+
+	l, err := net.Listen("tcp", nrpS.ProxyPort)
+	if err != nil {
+		panic(err)
+	}
+	defer l.Close()
+
+	for {
+		conn, err = l.Accept()
+		if err != nil {
+			panic(err)
+		}
+
+		for {
+			tempBuf := make([]byte, 4096)
+			n, err := conn.Read(tempBuf)
+			if err != nil {
+				return
+			}
+			if n == 0 {
+				continue
+			}
+
+			body := tempBuf[:n]
+
+			buffer, err := unpack.ToBytes(unpack.NewHead(0, int32(len(body)), unpack.HeadTypeData), body)
+			if err != nil {
+				continue
+			}
+			clientConnect.Write(buffer.Bytes())
+
+		}
 	}
 }
 
-
 var lock sync.RWMutex
-func readweb(conn net.Conn) {
+
+func readWeb(conn net.Conn) {
 	defer conn.Close()
 	//fmt.Println(conn.LocalAddr())
 	reader := bufio.NewReader(conn)
 
 	resp, err := http.ReadRequest(reader)
+	if err != nil {
+		log.Println(err)
+	}
 	if resp == nil {
 		//fmt.Println(resp)
 		return
 	}
-	glog.Error(err)
+
 	//fmt.Println(resp.Method)
 	//fmt.Println(resp.Host)
 	//fmt.Println(resp)
@@ -190,7 +219,6 @@ func readweb(conn net.Conn) {
 		//fmt.Println(http.ReadResponse(reader,resp))
 
 		server, err := net.DialTimeout("tcp", resp.Host, time.Second*12)
-
 		if err != nil {
 
 			return
@@ -202,58 +230,65 @@ func readweb(conn net.Conn) {
 
 		go func() {
 			_, err := io.Copy(server, conn)
-			glog.Error(err)
+			log.Println(err)
 		}()
 		_, err = io.Copy(conn, server)
-		glog.Error(err)
+		log.Println(err)
 
 	} else {
-		dfs, err := httputil.DumpRequest(resp, true)
+		body, err := httputil.DumpRequest(resp, true)
 		//fmt.Println(string(dfs))
-		glog.Error(err)
+		if err != nil {
+			log.Println(err)
+		}
 
 		if clientConnect != nil {
 			//clientConnect.Write(b)
 			lock.Lock()
 			var id = globalID + 1
-			globalID=id
+			globalID = id
 			lock.Unlock()
 
-			lenght := int32(len(dfs))
-			buffer := bytes.NewBuffer(make([]byte, 0))
+			length := int32(len(body))
+			/*buffer := bytes.NewBuffer(make([]byte, 0))
 			binary.Write(buffer, binary.LittleEndian, &id)     //8
 			binary.Write(buffer, binary.LittleEndian, &lenght) //4
-			binary.Write(buffer, binary.LittleEndian, &dfs)
+			binary.Write(buffer, binary.LittleEndian, &dfs)*/
 
-			//fmt.Println(len(dfs))
-			hp := &HttpPack{out: make(chan []byte), time: time.Now()}
-			outList.Set(id,hp)
-
-			_,err:=clientConnect.Write(buffer.Bytes())
-			if glog.Error(err){
-
+			buffer, err := unpack.ToBytes(unpack.NewHead(id, length, unpack.HeadTypeData), body)
+			if err != nil {
+				return
 			}
 
+			//fmt.Println(len(dfs))
+			hp := &httppack.HttpPack{Out: make(chan []byte), Time: time.Now()}
+			outList.Set(id, hp)
 
-			glog.Trace("数据写给客户端，等待客户端返回")
+			_, err = clientConnect.Write(buffer.Bytes())
+			if err != nil {
+				log.Println(err)
+				return
+			}
 
-			h,ok:=outList.Get(id)
-			if ok{
+			//log.Println("数据写给客户端，等待客户端返回")
+
+			h, ok := outList.Get(id)
+			if ok {
 				select {
-				case bdfd := <-h.out:
+				case bdfd := <-h.Out:
 					conn.Write(bdfd)
 					//close(hp.out)
-					glog.Trace("-----------输出数据-----------------")
-				case <-time.After(10*time.Second):
+					//log.Println("-----------输出数据-----------------")
+				case <-time.After(10 * time.Second):
 					conn.Write([]byte("timeout"))
 					//close(hp.out)
-					glog.Trace("-----------客户端返回超时-----------------")
+					//log.Println("-----------客户端返回超时-----------------")
 
 				}
-			}else{
+			} else {
 				conn.Write([]byte("数据出错"))
 				//close(hp.out)
-				glog.Trace("-----------数据出错-----------------")
+				log.Println("-----------数据出错-----------------")
 			}
 			outList.Del(id)
 			//fmt.Println(string(bdfd))
@@ -262,7 +297,6 @@ func readweb(conn net.Conn) {
 
 			resp, err := http.DefaultTransport.RoundTrip(resp)
 			if err != nil {
-
 				return
 			}
 			defer resp.Body.Close()
@@ -276,28 +310,51 @@ func readweb(conn net.Conn) {
 
 }
 
+func nrpClientReadPack(pack []byte) {
 
-func nrpClientReadPack(b []byte) {
+	//var id uint64
+	//var lenght int32
+	//readBuffer := bytes.NewBuffer(pack)
+	//binary.Read(readBuffer, binary.LittleEndian, &id)
+	//binary.Read(readBuffer, binary.LittleEndian, &lenght)
 
-	var id uint64
-	var lenght int32
-	readBuffer := bytes.NewBuffer(b)
-	binary.Read(readBuffer, binary.LittleEndian, &id)
-	binary.Read(readBuffer, binary.LittleEndian, &lenght)
-	bb := make([]byte, lenght)
-	binary.Read(readBuffer, binary.LittleEndian, &bb)
+	head, err := unpack.FromBytes(pack)
+	if err != nil {
+		return
+	}
+	body := pack[unpack.HeadLen():]
+
+	log.Println("nrps收到客户的信息：" + string(body))
+
+	//bb := make([]byte, length)
+	//binary.Read(readBuffer, binary.LittleEndian, &bb)
 	//fmt.Println("--s-s------")
 	//fmt.Println(string(bb))
 
 	//fmt.Println("-----------id------------")
 	//fmt.Println(id)
-	h,ok:=outList.Get(id)
-	if ok{
-		h.out <- bb
-		close(h.out)
-	}
 
+	if head.Type == unpack.HeadTypeData {
+		h, ok := outList.Get(head.ID)
+		if ok {
+			h.Out <- body
+			if requestType == unpack.HeadTypeHTTP {
+				close(h.Out)
+			}
+
+		}
+	} else if head.Type == unpack.HeadTypeHTTP {
+		requestType = unpack.HeadTypeHTTP
+		go startHttp()
+
+	} else if head.Type == unpack.HeadTypeTCP {
+		requestType = unpack.HeadTypeTCP
+		go startTCP()
+	}
 }
+
+var requestType unpack.HeadType
+
 func nrpClientRead() {
 
 	defer func() {
@@ -325,36 +382,39 @@ func nrpClientRead() {
 		buf = append(buf, buffer[:n]...)
 
 		for {
-			if len(buf) >= 12 {
-				testtH := buf[0:12]
-				var id uint64
-				var lenght int32
-				readBuffer := bytes.NewBuffer(testtH)
-				binary.Read(readBuffer, binary.LittleEndian, &id)
-				binary.Read(readBuffer, binary.LittleEndian, &lenght)
+			if len(buf) >= unpack.HeadLen() {
+				//testtH := buf[0:12]
+				//var id uint64
+				//var lenght int32
 
-				packLen:=lenght+12
+				//readBuffer := bytes.NewBuffer(testtH)
+				//binary.Read(readBuffer, binary.LittleEndian, &id)
+				//binary.Read(readBuffer, binary.LittleEndian, &lenght)
+
+				head, err := unpack.FromBytes(buf)
+				if err != nil {
+					break
+				}
+
+				packLen := head.Length + int32(unpack.HeadLen())
 				//glog.Trace("nrpClientRead",packLen,len(buf))
-				if int32(len(buf)) >= packLen && packLen>0 {
-					packs := buf[0 : packLen]
-					buf = append(make([]byte, 0), buf[lenght+12:]...)
-
-
+				if int32(len(buf)) >= packLen && packLen > 0 {
+					packs := buf[0:packLen]
+					buf = append(make([]byte, 0), buf[packLen:]...)
 
 					go func(args []byte) {
 						defer func() {
 							if r := recover(); r != nil {
 								b := debug.Stack()
-								glog.Debug(r, b)
+								log.Println(r, b)
 							}
 						}()
 						nrpClientReadPack(args)
 					}(packs)
 
-
 					if len(buf) > 0 {
 						//fmt.Printf("还有%v数据\n", len(buf))
-						glog.Trace(fmt.Sprintf("分包处理数据长度：%v", len(buf)))
+						log.Println(fmt.Sprintf("分包处理数据长度：%v", len(buf)))
 					}
 				} else {
 					break

@@ -3,7 +3,7 @@ package main
 import (
 	"bytes"
 	"encoding/binary"
-	"github.com/nbvghost/glog"
+	"log"
 	"net"
 	"time"
 )
@@ -43,55 +43,49 @@ func main() {
 
 	}*/
 
-
-	
 }
-func clientUdpServer()  {
+func clientUdpServer() {
 
-	plAddr := &net.UDPAddr{IP:net.ParseIP("0.0.0.0"), Port: 7770}
+	plAddr := &net.UDPAddr{IP: net.ParseIP("0.0.0.0"), Port: 7770}
 	prAddr := &net.UDPAddr{IP: net.ParseIP("0.0.0.0"), Port: 3389}
 
-
 	//proxyConn, err := net.Dial("udp",  ":3389")
-	proxyConn, err := net.DialUDP("udp",  plAddr,prAddr)
-	glog.Error(err)
-
-
+	proxyConn, err := net.DialUDP("udp", plAddr, prAddr)
+	log.Println(err)
 
 	go func() {
 
-		for{
+		for {
 			proxyConn.Write([]byte("52645456"))
-			if glog.Error(err){
+			if err != nil {
 
 			}
-			time.Sleep(1000*time.Millisecond)
+			time.Sleep(1000 * time.Millisecond)
 		}
 	}()
 
-	var i int32 =1
+	var i int32 = 1
 
-	for{
+	for {
 		data := make([]byte, 64)
 		n, err := proxyConn.Read(data)
 
-		buffer:=bytes.NewBuffer(make([]byte,0))
+		buffer := bytes.NewBuffer(make([]byte, 0))
 
-		binary.Read(buffer,binary.BigEndian,&i)
+		binary.Read(buffer, binary.BigEndian, &i)
 
-		glog.Trace("读取代理数据",n,i)
-		if glog.Error(err){
+		log.Println("读取代理数据", n, i)
+		if err != nil {
 			continue
 		}
 
 		i++
 		buffer.Reset()
-		binary.Write(buffer,binary.BigEndian,&i)
-
+		binary.Write(buffer, binary.BigEndian, &i)
 
 		//fmt.Print(buffer.Bytes())
-		n, err =proxyConn.Write(buffer.Bytes())
-		if glog.Error(err){
+		n, err = proxyConn.Write(buffer.Bytes())
+		if err != nil {
 			continue
 		}
 

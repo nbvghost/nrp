@@ -1,4 +1,4 @@
 {
-  "BindPort":":7000",
-  "HttpPort":":8040"
+  "ServerPort":":7000",
+  "ProxyPort":":8040"
 }
