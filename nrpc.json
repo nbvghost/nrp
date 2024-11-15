@@ -1,5 +1,5 @@
 {
-  "ServerIp":"127.0.0.1:7000",
-  "LocalIp":"127.0.0.1:8011",
-  "Type": "tcp"
+  "ServerIp":"47.243.91.213:8080",
+  "LocalIp":"maintain.dev.sites.ink:80",
+  "Type": "http"
 }

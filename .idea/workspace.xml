@@ -4,18 +4,11 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f8776516-0ecb-4c51-b7d6-f45330a83170" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/app/telnetserver/main.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/domain/httppack/index.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/nrp.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/nrp.iml" afterDir="false" />
+    <list default="true" id="f8776516-0ecb-4c51-b7d6-f45330a83170" name="Default" comment="优化，">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/nrpc/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/app/nrpc/main.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/nrps/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/app/nrps/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/nrpc.json" beforeDir="false" afterPath="$PROJECT_DIR$/nrpc.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/nrps.json" beforeDir="false" afterPath="$PROJECT_DIR$/nrps.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test.go" beforeDir="false" afterPath="$PROJECT_DIR$/test.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -33,7 +26,7 @@
   <component name="FormatOnSaveOptions">
     <option name="myRunOnSave" value="false" />
   </component>
-  <component name="GOROOT" url="file://$USER_HOME$/sdk/go1.19.4" />
+  <component name="GOROOT" url="file://$PROJECT_DIR$/../../go-sdk/go1.21.5" />
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
@@ -49,6 +42,10 @@
   <component name="OptimizeOnSaveOptions">
     <option name="myRunOnSave" value="false" />
   </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "customColor": "",
+  "associatedIndex": 5
+}]]></component>
   <component name="ProjectId" id="1RZ60uPgraVhjQDSqYLJoirUX2Y" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -57,18 +54,20 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "DefaultGoTemplateProperty": "Go File",
+    "Go Build.go build github.com/nbvghost/nrp/app/nrps.executor": "Debug",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.go.format.on.save.advertiser.fired": "true",
     "RunOnceActivity.go.formatter.settings.were.checked": "true",
     "RunOnceActivity.go.migrated.go.modules.settings": "true",
+    "RunOnceActivity.go.modules.automatic.dependencies.download": "true",
     "RunOnceActivity.go.modules.go.list.on.any.changes.was.set": "true",
     "RunOnceActivity.go.watchers.conflict.with.on.save.actions.check.performed": "true",
     "WebServerToolWindowFactoryState": "false",
     "git-widget-placeholder": "master",
     "go.import.settings.migrated": "true",
     "go.sdk.automatically.set": "true",
-    "last_opened_file_path": "D:/projects/serial",
+    "last_opened_file_path": "D:/projects/nrp",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -87,15 +86,7 @@
       <recent name="C:\Users\work\Documents\NrpWork" />
     </key>
   </component>
-  <component name="RunManager" selected="Go Build.go build github.com/nbvghost/nrp/app/nrpc">
-    <configuration default="true" type="GoApplicationRunConfiguration" factoryName="Go Application">
-      <module name="nrp" />
-      <working_directory value="$PROJECT_DIR$" />
-      <kind value="FILE" />
-      <directory value="$PROJECT_DIR$" />
-      <filePath value="$PROJECT_DIR$" />
-      <method v="2" />
-    </configuration>
+  <component name="RunManager" selected="Go Build.go build github.com/nbvghost/nrp/app/nrps">
     <configuration name="go build github.com/nbvghost/nrp/app/nrpc" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
       <module name="nrp" />
       <working_directory value="$PROJECT_DIR$" />
@@ -128,23 +119,22 @@
       <directory value="$PROJECT_DIR$/" />
       <method v="2" />
     </configuration>
-    <configuration default="true" type="GoTestRunConfiguration" factoryName="Go Test">
-      <module name="nrp" />
-      <working_directory value="$PROJECT_DIR$" />
-      <kind value="DIRECTORY" />
-      <directory value="$PROJECT_DIR$" />
-      <filePath value="$PROJECT_DIR$" />
-      <framework value="gotest" />
-      <method v="2" />
-    </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Go Build.go build github.com/nbvghost/nrp/app/nrpc" />
         <item itemvalue="Go Build.go build github.com/nbvghost/nrp/app/nrps" />
+        <item itemvalue="Go Build.go build github.com/nbvghost/nrp/app/nrpc" />
         <item itemvalue="Go Build.go build github.com/nbvghost/nrp/nrps" />
         <item itemvalue="Go Build.go build github.com/nbvghost/nrp/nrpc" />
       </list>
     </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-gosdk-33c477a475b1-e0158606a674-org.jetbrains.plugins.go.sharedIndexes.bundled-GO-241.15989.157" />
+        <option value="bundled-js-predefined-1d06a55b98c1-91d5c284f522-JavaScript-GO-241.15989.157" />
+      </set>
+    </attachedChunks>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TypeScriptGeneratedFilesManager">
@@ -160,6 +150,10 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="优化，" />
+    <option name="LAST_COMMIT_MESSAGE" value="优化，" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>

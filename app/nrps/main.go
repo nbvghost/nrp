@@ -107,20 +107,27 @@ func main() {
 	}
 
 }
+
+var httpListen net.Listener
+
 func startHttp() {
-	l, err := net.Listen("tcp", nrpS.ProxyPort)
+	var err error
+
+	if httpListen != nil {
+		httpListen.Close()
+	}
+
+	httpListen, err = net.Listen("tcp", nrpS.ProxyPort)
 	if err != nil {
 		panic(err)
 	}
-	defer l.Close()
+	defer httpListen.Close()
 
 	for {
-
-		conn, err := l.Accept()
+		conn, err := httpListen.Accept()
 		if err != nil {
-			panic(err)
+			return
 		}
-
 		go readWeb(conn)
 	}
 }

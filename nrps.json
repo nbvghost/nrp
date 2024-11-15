@@ -1,4 +1,4 @@
 {
-  "ServerPort":":7000",
-  "ProxyPort":":8040"
+  "ServerPort":"0.0.0.0:8080",
+  "ProxyPort":"0.0.0.0:7000"
 }
